@@ -2,13 +2,14 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class Client {
 
 
     public static void main(String[] args) {
         Distant server;
-        Candidate candidate;
+        ArrayList<Candidate> candidate;
         try {
             server = (Distant) Naming.lookup("rmi://localhost:10001/echo");
         } catch (NotBoundException e) {

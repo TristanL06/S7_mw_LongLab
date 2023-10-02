@@ -1,10 +1,11 @@
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implements Distant {
 
-    private static Candidate candidate;
+    private static ArrayList<Candidate> candidate;
     private int number;
     private Scanner scanner = new Scanner(System.in);
 
@@ -14,14 +15,15 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
     }
 
 
-    public static synchronized Candidate getInstanceCandidate() throws RemoteException {
+    public static synchronized ArrayList<Candidate> getInstanceCandidate() throws RemoteException {
         if (candidate == null) {
-            candidate = new Candidate("Jean", "Dupont", "");
+            candidate = new ArrayList<>();
+            candidate.add(new Candidate("Jean", "Dupont", ""));
         }
         return candidate;
     }
 
-    public Candidate retrieveCandidate() throws RemoteException {
+    public ArrayList<Candidate> retrieveCandidate() throws RemoteException {
         return getInstanceCandidate();
     }
 
@@ -29,6 +31,8 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         String password = clientStubElement.getCredentials();
         boolean userWasAbleToLogIn = this.checkCredentials(password);
         if (userWasAbleToLogIn) {
+            //TODO : create right votingMaterials
+            VotingMaterials votingMaterials = new VotingMaterials(getInstanceCandidate());
             clientStubElement.goodCredentials();
         } else {
             clientStubElement.badCredentials();

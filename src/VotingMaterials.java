@@ -1,14 +1,15 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class VotingMaterials {
 
-    Candidate[] candidates;
+    ArrayList<Candidate> candidates;
     HashMap<Candidate,Integer> votes = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
 
 
-    public VotingMaterials(Candidate[] candidates) {
+    public VotingMaterials(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
     }
 
