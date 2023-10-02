@@ -12,7 +12,7 @@ public class ObjectClientStub extends java.rmi.server.UnicastRemoteObject implem
     private Scanner scanner = new Scanner(System.in);
 
 
-    protected ObjectClientStub() throws RemoteException {
+    public ObjectClientStub() throws RemoteException {
         super();
     }
 
