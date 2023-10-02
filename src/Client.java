@@ -18,7 +18,6 @@ public class Client {
     private static LogIn logIn;
     private static boolean keepLooping = true;
     private static boolean stillCanVote;
-    private static Timer timer;
 
     private static ExecutorService executor;
     private static Scanner scanner;
@@ -41,9 +40,6 @@ public class Client {
         LogIn();
         createStub();
         registerInServer();
-
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new CheckStatusTask(timer), 0, 1000); // Vérifie toutes les secondes
 
 
 
@@ -163,9 +159,10 @@ public class Client {
         }
     }
 
-    private static void a() {
+    private static void scannerMethod() {
         scanner = new Scanner(System.in);
         input = scanner.nextLine();
+        executor.shutdownNow();
     }
 
     private static void loopInterfaceClientVotingPhase() {
@@ -175,16 +172,13 @@ public class Client {
         System.out.print("Enter your choice: ");
         int choice;
         executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> a());
+        executor.submit(() -> scannerMethod());
         boolean st = true;
         while (st && !executor.isTerminated()) {
             try {
                 // Attendez un certain temps avant de vérifier à nouveau
-                Thread.sleep(1000); // Attendre 1 seconde (peut être ajusté)
                 st = server.isStillInVotingPhase();
                 stillCanVote = st;
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -196,15 +190,15 @@ public class Client {
         } else {
             choice = Integer.parseInt(input);
         }
-        spacing(2);
+        spacing(1);
         switch (choice) {
             case 1:
                 displayCandidates();
-                spacing(3);
+                spacing(2);
                 break;
             case 2:
                 displayVote();
-                spacing(3);
+                spacing(2);
                 break;
             case 3 :
                 keepLooping = false;
@@ -213,7 +207,7 @@ public class Client {
                 break;
             default:
                 System.out.println("Invalid choice");
-                spacing(3);
+                spacing(2);
         }
     }
 
@@ -224,31 +218,37 @@ public class Client {
 
 
         int choice;
-
         if (executor.isTerminated()) {
+            executor.shutdown();
+            try {
+                executor.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            executor.shutdown();
             executor = Executors.newSingleThreadExecutor();
-            executor.submit(() -> a());
+            executor.submit(() -> scannerMethod());
         }
         while (!executor.isTerminated()) {
             try {
-                Thread.sleep(1000); // Attendre 1 seconde (peut être ajusté)
+                Thread.sleep(1); // Attendre 1 seconde (peut être ajusté)
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
             }
         }
         choice = Integer.parseInt(input);
 
-        spacing(2);
+        spacing(1);
         switch (choice) {
             case 1:
                 displayResult();
-                spacing(3);
+                spacing(2);
                 break;
             case 2:
                 keepLooping = false;
             default:
                 System.out.println("Invalid choice");
-                spacing(3);
+                spacing(2);
         }
     }
 
@@ -261,32 +261,5 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-
-
-    private static class CheckStatusTask extends TimerTask {
-        private Timer timer;
-
-        public CheckStatusTask(Timer timer) {
-            this.timer = timer;
-        }
-
-        @Override
-        public void run() {
-            // Code pour vérifier le statut du serveur
-            boolean newStatus = stillCanVote; // Remplacez par votre méthode de vérification du statut
-            try {
-                newStatus = server.isStillInVotingPhase();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-            if (!newStatus) {
-                System.out.println("Le statut du serveur a changé. Arrêt du timer.");
-
-                timer.cancel(); // Arrêter le timer lorsque le statut change
-            }
-        }
-    }
-
-
 }
 
