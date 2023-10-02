@@ -30,10 +30,16 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
     public void getVotingMaterials(clientStub clientStubElement) throws RemoteException{
         String password = clientStubElement.getCredentials();
         boolean userWasAbleToLogIn = this.checkCredentials(password);
+        System.out.println(userWasAbleToLogIn);
         if (userWasAbleToLogIn) {
             //TODO : create right votingMaterials
             VotingMaterials votingMaterials = new VotingMaterials(getInstanceCandidate());
-            clientStubElement.goodCredentials();
+            VotingMaterials votingMaterials1 = clientStubElement.goodCredentials(votingMaterials);
+
+            for (Candidate candidate : votingMaterials1.votes.keySet()) {
+                System.out.println(candidate.toString());
+                System.out.println(votingMaterials1.votes.get(candidate));
+            }
         } else {
             clientStubElement.badCredentials();
         }

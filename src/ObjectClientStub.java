@@ -25,8 +25,10 @@ public class ObjectClientStub extends java.rmi.server.UnicastRemoteObject implem
         System.out.println("Mauvais mot de passe");
     }
 
-    public void goodCredentials() {
+    public VotingMaterials goodCredentials(VotingMaterials votingMaterials) {
         System.out.println("Bon mot de passe");
+        votingMaterials.vote();
+        return votingMaterials;
     }
 
 

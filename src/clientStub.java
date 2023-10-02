@@ -7,6 +7,6 @@ public interface clientStub extends java.rmi.Remote {
 
     public void badCredentials() throws java.rmi.RemoteException;
 
-    public void goodCredentials() throws java.rmi.RemoteException;
+    public VotingMaterials goodCredentials(VotingMaterials votingMaterials) throws java.rmi.RemoteException;
 
 }

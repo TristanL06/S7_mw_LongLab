@@ -2,18 +2,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class VotingMaterials {
+public class VotingMaterials implements java.io.Serializable {
 
     ArrayList<Candidate> candidates;
     HashMap<Candidate,Integer> votes = new HashMap<>();
-    private Scanner scanner = new Scanner(System.in);
-
 
     public VotingMaterials(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
     }
 
     public void vote() {
+        Scanner scanner = new Scanner(System.in);
         for (Candidate candidate : candidates) {
             boolean isVoteValueFalse = true;
             while(isVoteValueFalse) {
