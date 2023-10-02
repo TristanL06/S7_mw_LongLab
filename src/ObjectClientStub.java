@@ -1,3 +1,6 @@
+import exception.badCredentialsException;
+import exception.globalException;
+
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
@@ -17,20 +20,26 @@ public class ObjectClientStub extends java.rmi.server.UnicastRemoteObject implem
     public String getCredentials() throws RemoteException {
         System.out.print("Veuillez entrer votre mot de passe : ");
         String password = scanner.nextLine();
+        System.out.println("\n\n\n");
         return password;
     }
 
 
-    public void badCredentials() {
-        System.out.println("Mauvais mot de passe");
+    public void badCredentials(String password) throws globalException {
+        throw new badCredentialsException(password);
     }
 
     public VotingMaterials goodCredentials(VotingMaterials votingMaterials) {
-        System.out.println("Bon mot de passe");
+        System.out.println("Mot de passe correct\n\n\n");
         votingMaterials.vote();
         return votingMaterials;
     }
 
-
+    public String getUserName() throws RemoteException {
+        System.out.print("Veuillez entrer votre nom d'utilisateur : ");
+        String userName = scanner.nextLine();
+        System.out.println("\n\n\n");
+        return userName;
+    }
 
 }

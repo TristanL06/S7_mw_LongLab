@@ -20,11 +20,16 @@ public class VotingMaterials implements java.io.Serializable {
                 String voteValue = scanner.nextLine();
                 try {
                     int voteValueInteger = Integer.parseInt(voteValue);
-                    isVoteValueFalse = false;
-                    this.votes.put(candidate, voteValueInteger);
+                    if (voteValueInteger < 0 || voteValueInteger > 3) {
+                        System.out.println("Veuillez entrer un nombre entre 0 et 3");
+                    } else {
+                        isVoteValueFalse = false;
+                        this.votes.put(candidate, voteValueInteger);
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Veuillez entrer un nombre");
                 }
+                System.out.println("\n\n\n");
             }
         }
     }

@@ -29,7 +29,7 @@ public class Server {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Server is ready");
+        System.out.println("Server is ready !");
     }
 
 }
