@@ -41,8 +41,6 @@ public class Client {
         createStub();
         registerInServer();
 
-
-
         loopInterfaceClient();
 
         System.exit(0);
@@ -52,6 +50,9 @@ public class Client {
     }
 
     private static void LogIn() {
+        /**
+         * Method use to create a new LogIn object
+         */
         try {
             logIn = new ObjectLogIn();
         } catch (RemoteException e) {
@@ -60,6 +61,9 @@ public class Client {
     }
 
     private static void createStub() {
+        /**
+         * Method use to create a new ObjectClientStub object
+         */
         try {
             objectClientStub = new ObjectClientStub();
         } catch (RemoteException e) {
@@ -68,6 +72,9 @@ public class Client {
     }
 
     private static void registerInServer() {
+        /**
+         * Method use to register the client in the server
+         */
         try {
             server.registerUser(logIn);
         } catch (RemoteException e) {
@@ -77,6 +84,11 @@ public class Client {
 
 
     private static Optional<Integer> getUserStudentNumber() {
+        /**
+         * Method use to ask the user to enter his student number
+         *
+         * @return Optional<Integer> : the student number if the user entered a valid one, empty otherwise
+         */
         Scanner scanner = new Scanner(System.in);
         int studentNumber;
         try {
@@ -91,6 +103,9 @@ public class Client {
     }
 
     private static void displayVote() {
+        /**
+         * Method use to display the vote interface in order to allow the user to vote
+         */
         int studentNumber;
         Optional<Integer> studentNumberOptional = getUserStudentNumber();
         if (studentNumberOptional.isPresent()) {
@@ -110,6 +125,9 @@ public class Client {
 
 
     private static void displayCandidates() {
+        /**
+         * Method use to display the candidates
+         */
         try {
             candidate = server.retrieveCandidate();
         } catch (RemoteException e) {
@@ -125,6 +143,9 @@ public class Client {
     }
 
     private static void spacing(int number) {
+        /**
+         * Method use to add a certain number of line breaks for more lisibility in the console
+         */
         for (int i = 0; i < number; i++) {
             System.out.println("");
         }
@@ -133,6 +154,10 @@ public class Client {
 
 
     private static void loopInterfaceClient() {
+        /**
+         * Method use to loop the client interface until he wants to exit
+         * Display either a vote interface or a result interface depending on the voting phase of the server
+         */
 
         updateStillCanVote();
 
@@ -152,6 +177,9 @@ public class Client {
     }
 
     private static void updateStillCanVote() {
+        /**
+         * Method use to update the stillCanVote variable : if the server is still in voting phase, the client can still vote
+         */
         try {
             stillCanVote = server.isStillInVotingPhase();
         } catch (RemoteException e) {
@@ -160,12 +188,18 @@ public class Client {
     }
 
     private static void scannerMethod() {
+        /**
+         * Method use to scan the user input. Used in a thread to bypass conflict between the end of the voting phase and the user input
+         */
         scanner = new Scanner(System.in);
         input = scanner.nextLine();
         executor.shutdownNow();
     }
 
     private static int loopInterfaceClientVotingPhase_executor() {
+        /**
+         * Method use to manage the executor of the scannerMethod and the end of the voting phase for the voting interface
+         */
         int choice;
         executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> scannerMethod());
@@ -179,7 +213,6 @@ public class Client {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Vous ne pouvez plus voter");
         if (!stillCanVote) {
             executor.shutdownNow();
             choice = 4;
@@ -190,6 +223,10 @@ public class Client {
     }
 
     private static void loopInterfaceClientVotingPhase() {
+        /**
+         * Method use to display the voting interface
+         * Ask the user to choose between 3 options : view candidates, vote or quit
+         */
         System.out.println("1. View candidates");
         System.out.println("2. Vote");
         System.out.println("3. Quit");
@@ -209,6 +246,7 @@ public class Client {
                 keepLooping = false;
                 break;
             case 4:
+                //DOing nothing : use when the voting phase is over
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -217,6 +255,9 @@ public class Client {
     }
 
     private static int loopInterfaceClientResultPhase_executor() {
+        /**
+         * Method use to manage the executor of the scannerMethod for the result interface
+         */
         int choice;
         if (executor.isTerminated()) {
             executor.shutdown();
@@ -235,6 +276,10 @@ public class Client {
     }
 
     private static void loopInterfaceClientResultPhase() {
+        /**
+         * Method use to display the result interface
+         * Ask the user to choose between 2 options : view results or quit
+         */
         System.out.println("1. View results");
         System.out.println("2. Quit");
         System.out.print("Enter your choice: ");
@@ -254,6 +299,9 @@ public class Client {
     }
 
     private static void displayResult() {
+        /**
+         * Method use to display the result of the vote
+         */
         try {
             server.getResultVote(logIn);
         } catch (RemoteException e) {

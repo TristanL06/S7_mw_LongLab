@@ -4,6 +4,7 @@ import exception.voteIsCloseException;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -41,8 +42,13 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
     }
 
     public void broadcastMessage(String message) throws RemoteException {
-        for (LogIn logInUser : users) {
-            logInUser.displayMessage(message);
+        List<LogIn> usersCopy = new ArrayList<>(users);
+        for (LogIn logInUser : usersCopy) {
+            try {
+                logInUser.displayMessage(message);
+            } catch (RemoteException e) {
+                users.remove(logInUser);
+            }
         }
     }
 
