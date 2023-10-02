@@ -24,5 +24,17 @@ public class Client {
             throw new RuntimeException(e);
         }
         System.out.println(candidate.toString());
+        ObjectClientStub objectClientStub;
+        try {
+            objectClientStub = new ObjectClientStub();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            server.getVotingMaterials(objectClientStub);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
