@@ -27,7 +27,7 @@ public class Client {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Client is ready !");
+        System.out.println("Client is ready !\n\n");
         loopInterfaceClient();
 
 
@@ -51,7 +51,6 @@ public class Client {
     }
 
     private static void displayVote() {
-        System.out.println(candidate.toString());
         ObjectClientStub objectClientStub;
         try {
             objectClientStub = new ObjectClientStub();
@@ -60,9 +59,9 @@ public class Client {
         }
 
         int studentNumber;
-        if (getUserStudentNumber().isPresent()) {
-            studentNumber = getUserStudentNumber().get();
-            System.out.println("\n\n\n");
+        Optional<Integer> studentNumberOptional = getUserStudentNumber();
+        if (studentNumberOptional.isPresent()) {
+            studentNumber = studentNumberOptional.get();
         } else {
             return;
         }
@@ -90,10 +89,10 @@ public class Client {
         }
     }
 
-    private static void spacing() {
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
+    private static void spacing(int number) {
+        for (int i = 0; i < number; i++) {
+            System.out.println("");
+        }
     }
 
 
@@ -107,20 +106,21 @@ public class Client {
             System.out.print("Enter your choice: ");
             Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
+            spacing(2);
             switch (choice) {
                 case 1:
                     displayCandidates();
-                    spacing();
+                    spacing(3);
                     break;
                 case 2:
                     displayVote();
-                    spacing();
+                    spacing(3);
                     break;
                 case 3 :
                     keepLooping = false;
                 default:
                     System.out.println("Invalid choice");
-                    spacing();
+                    spacing(3);
             }
         }
     }
