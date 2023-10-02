@@ -2,7 +2,7 @@
 
 
 
-public class Users {
+public class Users implements java.io.Serializable {
 
     private int id;
     private String password;
