@@ -165,11 +165,7 @@ public class Client {
         executor.shutdownNow();
     }
 
-    private static void loopInterfaceClientVotingPhase() {
-        System.out.println("1. View candidates");
-        System.out.println("2. Vote");
-        System.out.println("3. Quit");
-        System.out.print("Enter your choice: ");
+    private static int loopInterfaceClientVotingPhase_executor() {
         int choice;
         executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> scannerMethod());
@@ -190,6 +186,15 @@ public class Client {
         } else {
             choice = Integer.parseInt(input);
         }
+        return choice;
+    }
+
+    private static void loopInterfaceClientVotingPhase() {
+        System.out.println("1. View candidates");
+        System.out.println("2. Vote");
+        System.out.println("3. Quit");
+        System.out.print("Enter your choice: ");
+        int choice = loopInterfaceClientVotingPhase_executor();
         spacing(1);
         switch (choice) {
             case 1:
@@ -211,20 +216,9 @@ public class Client {
         }
     }
 
-    private static void loopInterfaceClientResultPhase() {
-        System.out.println("1. View results");
-        System.out.println("2. Quit");
-        System.out.print("Enter your choice: ");
-
-
+    private static int loopInterfaceClientResultPhase_executor() {
         int choice;
         if (executor.isTerminated()) {
-            executor.shutdown();
-            try {
-                executor.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             executor.shutdown();
             executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> scannerMethod());
@@ -237,7 +231,14 @@ public class Client {
             }
         }
         choice = Integer.parseInt(input);
+        return choice;
+    }
 
+    private static void loopInterfaceClientResultPhase() {
+        System.out.println("1. View results");
+        System.out.println("2. Quit");
+        System.out.print("Enter your choice: ");
+        int choice = loopInterfaceClientResultPhase_executor();
         spacing(1);
         switch (choice) {
             case 1:
