@@ -1,5 +1,9 @@
-import exception.badCredentialsException;
-import exception.globalException;
+package election.global.objectInterface;
+
+import election.global.VotingMaterials;
+import election.global.Interface.clientStub;
+import election.global.exception.badCredentialsException;
+import election.global.exception.globalException;
 
 import java.rmi.RemoteException;
 import java.util.Scanner;

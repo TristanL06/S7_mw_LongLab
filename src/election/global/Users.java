@@ -1,5 +1,4 @@
-
-
+package election.global;
 
 
 public class Users implements java.io.Serializable {

@@ -1,4 +1,7 @@
-import exception.globalException;
+package election.global.Interface;
+
+import election.global.VotingMaterials;
+import election.global.exception.globalException;
 
 public interface clientStub extends java.rmi.Remote {
 

@@ -1,3 +1,8 @@
+package election.server;
+
+import election.global.Result;
+import election.global.objectInterface.ObjectDistant;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -11,6 +16,9 @@ public class Server {
 
     public static ObjectDistant objectDistant;
     private static int passwordToStopVotingPhase = 1234;
+    private static long numberMinutesToVote = 1;
+    private static double numberMinutesToVoteWarning = Math.min((double)numberMinutesToVote / 2, 5);
+    private static double numberMinutesBeforeLaunchingWarning = numberMinutesToVote - numberMinutesToVoteWarning;
 
     private static void startServer() {
         try {
@@ -30,7 +38,7 @@ public class Server {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Server is ready !");
+        System.out.println("example.Server is ready !");
     }
 
 
@@ -39,8 +47,8 @@ public class Server {
 
         startServer();
 
-        long dureeTotaleMillisecondes = (60000 * 1/2); // 60 secondes
-        long timeBeforeWarningTimeVote = dureeTotaleMillisecondes - (60000 * 1/4); // 30 secondes
+        long dureeTotaleMillisecondes = (60000 * numberMinutesToVote); // 60 secondes
+        long timeBeforeWarningTimeVote = dureeTotaleMillisecondes - (long) (60000 * numberMinutesBeforeLaunchingWarning); // 30 secondes
 
         Timer timer = new Timer();
 
@@ -48,7 +56,7 @@ public class Server {
             @Override
             public void run() {
                 try {
-                    objectDistant.broadcastMessage("Temps écoulé dans 5 minutes !\n\n");
+                    objectDistant.broadcastMessage("Temps écoulé dans " + numberMinutesToVoteWarning + " minutes !\n");
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -59,7 +67,7 @@ public class Server {
             @Override
             public void run() {
                 try {
-                    objectDistant.broadcastMessage("Temps écoulé ! Fin du vote.\n\n");
+                    objectDistant.broadcastMessage("Temps écoulé ! Fin du vote.\n");
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

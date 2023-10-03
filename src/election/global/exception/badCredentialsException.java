@@ -1,4 +1,4 @@
-package exception;
+package election.global.exception;
 
 public class badCredentialsException extends globalException {
 

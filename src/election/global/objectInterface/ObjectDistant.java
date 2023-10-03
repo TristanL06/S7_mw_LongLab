@@ -1,11 +1,18 @@
-import exception.globalException;
-import exception.voteIsCloseException;
+package election.global.objectInterface;
+
+import election.global.Candidate;
+import election.global.Result;
+import election.global.VotingMaterials;
+import election.global.Interface.Distant;
+import election.global.Interface.LogIn;
+import election.global.Interface.clientStub;
+import election.global.exception.globalException;
+import election.global.exception.voteIsCloseException;
 
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implements Distant {
@@ -26,7 +33,8 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         if (candidate == null) {
             //TODO : create candidate using csv file
             candidate = new ArrayList<>();
-            candidate.add(new Candidate("Jean", "Dupont", ""));
+            candidate.add(new Candidate("Jean", "Dupont", "Hello", false));
+            candidate.add(new Candidate("Jean", "Dupont", "Hello", true));
         }
         return candidate;
     }
@@ -45,7 +53,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         List<LogIn> usersCopy = new ArrayList<>(users);
         for (LogIn logInUser : usersCopy) {
             try {
-                logInUser.displayMessage(message);
+                logInUser.displayMessageFromServer(message);
             } catch (RemoteException e) {
                 users.remove(logInUser);
             }

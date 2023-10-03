@@ -1,5 +1,8 @@
-import exception.globalException;
-import exception.voteIsCloseException;
+package election.global.Interface;
+
+import election.global.Candidate;
+import election.global.exception.globalException;
+import election.global.exception.voteIsCloseException;
 
 import java.util.ArrayList;
 

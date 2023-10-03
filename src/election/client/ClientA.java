@@ -1,5 +1,12 @@
-import exception.globalException;
-import exception.voteIsCloseException;
+package election.client;
+
+import election.global.Candidate;
+import election.global.Interface.Distant;
+import election.global.Interface.LogIn;
+import election.global.exception.globalException;
+import election.global.exception.voteIsCloseException;
+import election.global.objectInterface.ObjectClientStub;
+import election.global.objectInterface.ObjectLogIn;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -8,9 +15,9 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-public class Client {
+
+public class ClientA {
 
     private static Distant server;
     private static ArrayList<Candidate> candidate;
@@ -25,18 +32,20 @@ public class Client {
 
     public static void main(String[] args) {
 
-
         try {
             server = (Distant) Naming.lookup("rmi://localhost:10001/echo");
         } catch (NotBoundException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException(e);
         } catch (MalformedURLException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException(e);
         } catch (RemoteException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException(e);
         }
 
-        System.out.println("Client is ready !\n\n");
+        System.out.println("\u001B[35mClient is ready !\u001B[0m\n\n");
         LogIn();
         createStub();
         registerInServer();
@@ -51,7 +60,7 @@ public class Client {
 
     private static void LogIn() {
         /**
-         * Method use to create a new LogIn object
+         * Method use to create a new example.LogIn object
          */
         try {
             logIn = new ObjectLogIn();
@@ -62,7 +71,7 @@ public class Client {
 
     private static void createStub() {
         /**
-         * Method use to create a new ObjectClientStub object
+         * Method use to create a new example.ObjectClientStub object
          */
         try {
             objectClientStub = new ObjectClientStub();
@@ -73,7 +82,7 @@ public class Client {
 
     private static void registerInServer() {
         /**
-         * Method use to register the client in the server
+         * Method use to register the example.client in the server
          */
         try {
             server.registerUser(logIn);
@@ -136,7 +145,7 @@ public class Client {
             System.err.println("\n  -> An error has occurred : " + e.getErrorTitle() + "\n");
         }
         for (int i = 0; i < candidate.size(); i++) {
-            System.out.println("Candidate: " + i);
+            System.out.println("example.Candidate: " + i);
             System.out.println(candidate.get(i).toString());
             System.out.println("");
         }
@@ -155,7 +164,7 @@ public class Client {
 
     private static void loopInterfaceClient() {
         /**
-         * Method use to loop the client interface until he wants to exit
+         * Method use to loop the example.client interface until he wants to exit
          * Display either a vote interface or a result interface depending on the voting phase of the server
          */
 
@@ -178,7 +187,7 @@ public class Client {
 
     private static void updateStillCanVote() {
         /**
-         * Method use to update the stillCanVote variable : if the server is still in voting phase, the client can still vote
+         * Method use to update the stillCanVote variable : if the server is still in voting phase, the example.client can still vote
          */
         try {
             stillCanVote = server.isStillInVotingPhase();
@@ -227,6 +236,7 @@ public class Client {
          * Method use to display the voting interface
          * Ask the user to choose between 3 options : view candidates, vote or quit
          */
+        System.out.println("Voting phase");
         System.out.println("1. View candidates");
         System.out.println("2. Vote");
         System.out.println("3. Quit");
@@ -280,6 +290,7 @@ public class Client {
          * Method use to display the result interface
          * Ask the user to choose between 2 options : view results or quit
          */
+        System.out.println("example.Result phase");
         System.out.println("1. View results");
         System.out.println("2. Quit");
         System.out.print("Enter your choice: ");
