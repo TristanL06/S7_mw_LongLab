@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/S7_mw_LongLab.iml" filepath="$PROJECT_DIR$/.idea/S7_mw_LongLab.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/longLab.iml" filepath="$PROJECT_DIR$/longLab.iml" />
+>>>>>>> master
     </modules>
   </component>
 </project>

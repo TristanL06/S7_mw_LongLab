@@ -1,0 +1,20 @@
+
+
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(²ƒΛ8Ω±ξύ®1
+8
+java:S16439"Use a StringBuilder instead.(·Γ»8Ω±ξύ®1
+n	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ΊΑκ΅ϋÿÿÿÿ8Ω±ξύ®1
+T
+java:S1117"8Rename "files" which hides the field declared at line 8.(ΥΟμ8κ±ξύ®1
+Y
+java:S1117"7Rename "path" which hides the field declared at line 9.(Ϋ—ζÿÿÿÿÿ8κ±ξύ®1
+Y
+java:S1117%"7Rename "path" which hides the field declared at line 9.(Ϋ—ζÿÿÿÿÿ8κ±ξύ®1
+Y
+java:S11176"7Rename "path" which hides the field declared at line 9.(Ϋ—ζÿÿÿÿÿ8ω±ξύ®1
+Y
+java:S1117?"7Rename "path" which hides the field declared at line 9.(Ϋ—ζÿÿÿÿÿ8ω±ξύ®1
+Y
+java:S1117F"7Rename "path" which hides the field declared at line 9.(Ϋ—ζÿÿÿÿÿ8ω±ξύ®1
+]
+java:S1128";Remove this unused import 'java.util.stream.StreamSupport'.(φ°€ÿÿÿÿÿ8„ιξύ®1
