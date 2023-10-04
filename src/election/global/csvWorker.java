@@ -1,3 +1,5 @@
+package election.global;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,11 +10,11 @@ public class csvWorker {
     private String[] files;
     private String path = "data/";
 
-    csvWorker() {
+    public csvWorker() {
         this.files = new String[]{"candidats.csv", "votants.csv"};
     }
 
-    csvWorker(String file) {
+    public csvWorker(String file) {
         this.files = new String[]{"candidats.csv", "votants.csv", file};
     }
 
@@ -32,19 +34,23 @@ public class csvWorker {
         return files;
     }
 
-    public String[][] readCSV(String file) throws IOException { // return the content of the CSV file as a String[][]
+    public String[][] readCSV(String file) { // return the content of the CSV file as a String[][]
         String[][] values;
         Path path = Path.of(this.path + file);
-        byte[] bytes = Files.readAllBytes(path);
-        String content = new String(bytes);
-        String[] lines = content.split("\n");
-        values = new String[lines.length - 1][];
-        for (int i = 1; i < lines.length; i++) {
-            String[] splitLine = lines[i].split(",");
-            values[i - 1] = new String[splitLine.length];
-            for (int j = 0; j < splitLine.length; j++) {
-                values[i - 1][j] = splitLine[j].trim(); // Trim whitespace
+        try {
+            byte[] bytes = Files.readAllBytes(path);
+            String content = new String(bytes);
+            String[] lines = content.split("\n");
+            values = new String[lines.length - 1][];
+            for (int i = 1; i < lines.length; i++) {
+                String[] splitLine = lines[i].split(",");
+                values[i - 1] = new String[splitLine.length];
+                for (int j = 0; j < splitLine.length; j++) {
+                    values[i - 1][j] = splitLine[j].trim(); // Trim whitespace
+                }
             }
+        } catch (IOException e) {
+            values = new String[0][0];
         }
         return values;
     }

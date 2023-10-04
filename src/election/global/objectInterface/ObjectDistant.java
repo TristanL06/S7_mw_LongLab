@@ -6,6 +6,7 @@ import election.global.VotingMaterials;
 import election.global.Interface.Distant;
 import election.global.Interface.LogIn;
 import election.global.Interface.clientStub;
+import election.global.csvWorker;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
 
@@ -33,6 +34,11 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         if (candidate == null) {
             //TODO : create candidate using csv file
             candidate = new ArrayList<>();
+            csvWorker csv = new csvWorker();
+            String[][] cs = csv.readCSV("src/election/global/candidate.csv");
+            for (String[] c : cs) {
+                candidate.add(new Candidate(c[0], c[1], c[2], Boolean.parseBoolean(c[3])));
+            }
             candidate.add(new Candidate("Jean", "Dupont", "Hello", false));
             candidate.add(new Candidate("Jean", "Dupont", "Hello", true));
         }
