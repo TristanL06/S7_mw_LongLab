@@ -1,12 +1,14 @@
 package election.global.objectInterface;
 
 import election.global.Candidate;
+import election.global.Interface.ServerCandidate;
+import election.global.Interface.ServerVote;
 import election.global.Result;
 import election.global.VotingMaterials;
 import election.global.Interface.Distant;
 import election.global.Interface.LogIn;
-import election.global.Interface.clientStub;
 import election.global.csvWorker;
+import election.global.exception.badCredentialsException;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
 
@@ -24,6 +26,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
     private static boolean votingIsOpen = true;
 
     private static Result result;
+    private static int lastOTP = 0;
 
     public ObjectDistant(int port, int passwordStopVoting) throws RemoteException {
         super(port);
@@ -70,31 +73,31 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         users.add(logIn);
     }
 
-    public ArrayList<Candidate> retrieveCandidate() throws RemoteException, globalException {
+    public ServerCandidate retrieveCandidate() throws RemoteException, globalException {
         if (votingIsOpen) {
-            return getInstanceCandidate();
+            ServerCandidate serverCandidate = new ObjectServerCandidate(getInstanceCandidate());
+            return serverCandidate;
         } else {
             throw new voteIsCloseException();
         }
     }
 
-    public void getVotingMaterials(clientStub clientStubElement, int studentNumber) throws RemoteException, globalException {
+    private int getOTP() {
+        return this.lastOTP + 1;
+    }
+
+    public ServerVote getVotingMaterials(String password) throws RemoteException, globalException {
         if (!votingIsOpen) {
             throw new voteIsCloseException();
         }
-        String password = clientStubElement.getCredentials();
         boolean userWasAbleToLogIn = this.checkCredentials(password);
         if (userWasAbleToLogIn) {
             //TODO : create right votingMaterials
             VotingMaterials votingMaterials = new VotingMaterials(getInstanceCandidate());
-            VotingMaterials votingMaterialsModified = clientStubElement.goodCredentials(votingMaterials);
-            this.updateCandidate(votingMaterialsModified);
-
-            String userName = clientStubElement.getUserName();
-
-            this.updateUsers(userName);
+            ServerVote serverVote = new ObjectServerVote(votingMaterials, this, this.getOTP());
+            return serverVote;
         } else {
-            clientStubElement.badCredentials(password);
+            throw new badCredentialsException(password);
         }
     }
 
@@ -113,7 +116,8 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         return true;
     }
 
-    private void updateCandidate(VotingMaterials votingMaterials) {
+    public void updateCandidate(VotingMaterials votingMaterials, int OTP, String userName, int userNumber) {
+        this.updateUsers(userName);
         //TODO : update candidate using votingMaterials
         //TODO : update user with his vote in order to allow him to modify it later
     }

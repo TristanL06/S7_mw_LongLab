@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public interface Distant extends java.rmi.Remote {
 
-    public ArrayList<Candidate> retrieveCandidate() throws java.rmi.RemoteException, globalException;
+    public ServerCandidate retrieveCandidate() throws java.rmi.RemoteException, globalException;
 
-    public void getVotingMaterials(clientStub clientSubObject, int studentNumber) throws java.rmi.RemoteException, globalException;
+    public ServerVote getVotingMaterials(String password) throws java.rmi.RemoteException, globalException;
 
     public void registerUser(LogIn login) throws java.rmi.RemoteException;
 

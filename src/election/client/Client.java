@@ -3,10 +3,12 @@ package election.client;
 import election.global.Candidate;
 import election.global.Interface.Distant;
 import election.global.Interface.LogIn;
+import election.global.Interface.ServerCandidate;
+import election.global.Interface.ServerVote;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
-import election.global.objectInterface.ObjectClientStub;
 import election.global.objectInterface.ObjectLogIn;
+import election.global.objectInterface.ObjectServerVote;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -22,7 +24,6 @@ public class Client {
 
     private static Distant server;
     private static ArrayList<Candidate> candidate;
-    private static ObjectClientStub objectClientStub;
     private static LogIn logIn;
     private static boolean keepLooping = true;
     private static boolean stillCanVote;
@@ -46,7 +47,6 @@ public class Client {
 
         System.out.println("\u001B[35mClient is ready !\u001B[0m\n\n");
         LogIn();
-        createStub();
         registerInServer();
 
         loopInterfaceClient();
@@ -63,17 +63,6 @@ public class Client {
          */
         try {
             logIn = new ObjectLogIn();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void createStub() {
-        /**
-         * Method use to create a new example.ObjectClientStub object
-         */
-        try {
-            objectClientStub = new ObjectClientStub();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -110,6 +99,23 @@ public class Client {
         }
     }
 
+    private static Optional<String> getUserName() {
+        /**
+         * Method use to ask the user to enter his username
+         */
+        Scanner scanner = new Scanner(System.in);
+        String userName;
+        try {
+            System.out.println("Entrez votre nom d'utilisateur : ");
+            userName = scanner.nextLine();
+            return Optional.of(userName);
+        } catch (InputMismatchException e) {
+            System.out.println("Entrée invalide. Veuillez saisir un nombre entier.");
+            scanner.nextLine(); // Efface la ligne incorrecte du scanner
+            return Optional.empty();
+        }
+    }
+
     private static void displayVote() {
         /**
          * Method use to display the vote interface in order to allow the user to vote
@@ -122,8 +128,21 @@ public class Client {
             return;
         }
 
+        String userName;
+        Optional<String> userNameOptional = getUserName();
+        if (userNameOptional.isPresent()) {
+            userName = userNameOptional.get();
+        } else {
+            return;
+        }
+
+        System.out.print("Veuillez entrer votre mot de passe : ");
+        String password = scanner.nextLine();
+        System.out.println("\n\n\n");
+
         try {
-            server.getVotingMaterials(objectClientStub, studentNumber);
+            ServerVote objectServerVote = server.getVotingMaterials(password);
+            objectServerVote.vote(userName, studentNumber);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         } catch (globalException e) {
@@ -137,17 +156,19 @@ public class Client {
          * Method use to display the candidates
          */
         try {
-            candidate = server.retrieveCandidate();
+            ServerCandidate serverCandidate = server.retrieveCandidate();
+            candidate = serverCandidate.getCandidate();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         } catch (globalException e) {
             System.err.println("\n  -> An error has occurred : " + e.getErrorTitle() + "\n");
         }
         for (int i = 0; i < candidate.size(); i++) {
-            System.out.println("example.Candidate: " + i);
+            System.out.println("Candidate: " + candidate.get(i).getRank());
             System.out.println(candidate.get(i).toString());
             System.out.println("");
         }
+        System.out.println("To watch");
     }
 
     private static void spacing(int number) {
