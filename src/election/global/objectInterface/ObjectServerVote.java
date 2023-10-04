@@ -4,6 +4,7 @@ import election.global.Candidate;
 import election.global.Interface.LogIn;
 import election.global.Interface.ServerVote;
 import election.global.Result;
+import election.global.User;
 import election.global.VotingMaterials;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
@@ -26,12 +27,12 @@ public class ObjectServerVote extends java.rmi.server.UnicastRemoteObject implem
         this.OTP = OTP;
     }
 
-    public void vote(String userName, int userNumber) {
+    public void vote(User user) throws globalException {
 
         System.out.println("Mot de passe correct\n\n\n");
 
         votingMaterials.vote();
-        this.objectDistant.updateCandidate(votingMaterials, OTP, userName, userNumber);
+        this.objectDistant.updateCandidate(votingMaterials, OTP, user);
     }
 
 

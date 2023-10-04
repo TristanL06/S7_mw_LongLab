@@ -5,10 +5,10 @@ import election.global.Interface.Distant;
 import election.global.Interface.LogIn;
 import election.global.Interface.ServerCandidate;
 import election.global.Interface.ServerVote;
+import election.global.User;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
 import election.global.objectInterface.ObjectLogIn;
-import election.global.objectInterface.ObjectServerVote;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -31,6 +31,7 @@ public class Client {
     private static ExecutorService executor;
     private static Scanner scanner;
     private static String input;
+    private static User user;
 
     public static void main(String[] args) {
 
@@ -116,16 +117,16 @@ public class Client {
         }
     }
 
-    private static void displayVote() {
+    private static User createUser() {
         /**
-         * Method use to display the vote interface in order to allow the user to vote
+         * Method use to create a new example.Users object
          */
         int studentNumber;
         Optional<Integer> studentNumberOptional = getUserStudentNumber();
         if (studentNumberOptional.isPresent()) {
             studentNumber = studentNumberOptional.get();
         } else {
-            return;
+            return null;
         }
 
         String userName;
@@ -133,16 +134,36 @@ public class Client {
         if (userNameOptional.isPresent()) {
             userName = userNameOptional.get();
         } else {
-            return;
+            return null;
         }
 
         System.out.print("Veuillez entrer votre mot de passe : ");
         String password = scanner.nextLine();
         System.out.println("\n\n\n");
 
+        return new User(studentNumber, password, userName);
+    }
+
+    private static User getUser() {
+        /**
+         * Method use to get the user from the server
+         */
+        if (user != null) {
+            return user;
+        } else {
+            return createUser();
+        }
+    }
+
+    private static void displayVote() {
+        /**
+         * Method use to display the vote interface in order to allow the user to vote
+         */
+        User user = getUser();
+
         try {
-            ServerVote objectServerVote = server.getVotingMaterials(password);
-            objectServerVote.vote(userName, studentNumber);
+            ServerVote objectServerVote = server.getVotingMaterials(user.getPassword());
+            objectServerVote.vote(user);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         } catch (globalException e) {

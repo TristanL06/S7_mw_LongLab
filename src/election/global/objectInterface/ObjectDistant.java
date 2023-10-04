@@ -1,21 +1,21 @@
 package election.global.objectInterface;
 
-import election.global.Candidate;
+import election.global.*;
 import election.global.Interface.ServerCandidate;
 import election.global.Interface.ServerVote;
-import election.global.Result;
-import election.global.VotingMaterials;
 import election.global.Interface.Distant;
 import election.global.Interface.LogIn;
-import election.global.csvWorker;
 import election.global.exception.badCredentialsException;
+import election.global.exception.badOTPException;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
 
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.lang.Math;
 
 
 public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implements Distant {
@@ -27,6 +27,8 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
 
     private static Result result;
     private static int lastOTP = 0;
+
+    private static HashMap<Integer,Integer> OTPs = new HashMap<Integer,Integer>();
 
     public ObjectDistant(int port, int passwordStopVoting) throws RemoteException {
         super(port);
@@ -53,6 +55,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
             System.out.println("Voting is now closed");
             result = resultGiven;
             votingIsOpen = false;
+            OTPs.clear();
         } else {
             System.out.println("Wrong password");
         }
@@ -83,7 +86,13 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
     }
 
     private int getOTP() {
-        return this.lastOTP + 1;
+        lastOTP = this.mathOTP(lastOTP);
+        OTPs.put(lastOTP, 0);
+        return lastOTP;
+    }
+
+    private int mathOTP(int OTP) {
+        return (int) (Math.log(Math.exp(OTP) - Math.sqrt(OTP) + 1)/2 + 4);
     }
 
     public ServerVote getVotingMaterials(String password) throws RemoteException, globalException {
@@ -116,13 +125,18 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         return true;
     }
 
-    public void updateCandidate(VotingMaterials votingMaterials, int OTP, String userName, int userNumber) {
-        this.updateUsers(userName);
+    public void updateCandidate(VotingMaterials votingMaterials, int OTP, User user) throws globalException {
+        if (OTPs.containsKey(OTP)) {
+            OTPs.remove(OTP);
+        } else {
+            throw new badOTPException();
+        }
+        this.updateUsers(user);
         //TODO : update candidate using votingMaterials
         //TODO : update user with his vote in order to allow him to modify it later
     }
 
-    private void updateUsers(String userName) {
+    private void updateUsers(User user) {
         LocalDateTime dateOfVote = LocalDateTime.now();
         //TODO : update user with his vote, his name and the date of his vote
     }
