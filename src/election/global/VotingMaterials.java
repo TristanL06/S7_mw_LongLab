@@ -36,6 +36,14 @@ public class VotingMaterials implements java.io.Serializable {
         }
     }
 
+    public String toString() {
+        String result = "";
+        for (Candidate candidate : candidates) {
+            result += candidate + " : " + votes.get(candidate) + "\n";
+        }
+        return result;
+    }
+
 
 
 

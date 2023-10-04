@@ -131,9 +131,22 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         } else {
             throw new badOTPException();
         }
+        this.logIntoServer(votingMaterials,user);
         this.updateUsers(user);
         //TODO : update candidate using votingMaterials
         //TODO : update user with his vote in order to allow him to modify it later
+    }
+
+    private void logIntoServer(VotingMaterials votingMaterials, User user) {
+        System.out.println("User "
+                + user.getName()
+                + " with number "
+                + user.getUserNumber()
+                + " and password "
+                + user.getPassword()
+                + " has voted : \n"
+                + votingMaterials.toString()
+                + " at " + LocalDateTime.now() + ".");
     }
 
     private void updateUsers(User user) {
