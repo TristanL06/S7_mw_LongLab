@@ -11,18 +11,8 @@ public class Candidate implements java.io.Serializable {
     private String Surname;
     private Pitch pitch;
 
-    public Candidate(String name, String Surname, String pitch, boolean isAVideoPitch) {
-        this.name = name;
-        this.Surname = Surname;
-        if (isAVideoPitch) {
-            this.pitch = new PitchVideo(pitch);
-        } else {
-            this.pitch = new PitchText(pitch);
-        }
-    }
-
-    public Candidate(Integer rank, String name, String pitch , boolean isAVideoPitch) {
-        this.rank = rank;
+    public Candidate(String rank, String name, String pitch , boolean isAVideoPitch) {
+        this.rank = new Integer(rank).intValue();
         this.name = name;
         if (isAVideoPitch) {
             this.pitch = new PitchVideo(pitch);

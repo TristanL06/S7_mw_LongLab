@@ -37,15 +37,12 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
 
     public static synchronized ArrayList<Candidate> getInstanceCandidate() throws RemoteException {
         if (candidate == null) {
-            //TODO : create candidate using csv file
             candidate = new ArrayList<>();
             csvWorker csv = new csvWorker();
-            String[][] cs = csv.readCSV("src/election/global/candidate.csv");
+            String[][] cs = csv.readCSV("../data/candidats.csv");
             for (String[] c : cs) {
                 candidate.add(new Candidate(c[0], c[1], c[2], Boolean.parseBoolean(c[3])));
             }
-            candidate.add(new Candidate("Jean", "Dupont", "Hello", false));
-            candidate.add(new Candidate("Jean", "Dupont", "Hello", true));
         }
         return candidate;
     }
@@ -54,6 +51,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         if (password == passwordStopVoting) {
             System.out.println("Voting is now closed");
             result = resultGiven;
+            System.out.println(result.toString());
             votingIsOpen = false;
             OTPs.clear();
         } else {
