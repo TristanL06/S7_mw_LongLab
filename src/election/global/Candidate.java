@@ -32,11 +32,17 @@ public class Candidate implements java.io.Serializable {
     }
 
     public String toString() {
+
         return "Rank :" + rank + "\nName : " + name + "\nPitch : " + pitch.getPitch();
     }
 
     public String getRank() {
+
         return rank.toString();
+    }
+
+    public String getName() {
+        return name;
     }
 
 }
