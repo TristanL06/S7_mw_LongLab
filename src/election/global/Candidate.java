@@ -10,6 +10,7 @@ public class Candidate implements java.io.Serializable {
     private String name;
     private String Surname;
     private Pitch pitch;
+    private boolean isAVideoPitch;
 
     public Candidate(String rank, String name, String pitch , boolean isAVideoPitch) {
         this.rank = new Integer(rank).intValue();
@@ -19,6 +20,15 @@ public class Candidate implements java.io.Serializable {
         } else {
             this.pitch = new PitchText(pitch);
         }
+        this.isAVideoPitch = isAVideoPitch;
+    }
+
+    public boolean isAVideoPitch() {
+        return isAVideoPitch;
+    }
+
+    public Pitch getPitch() {
+        return pitch;
     }
 
     public String toString() {

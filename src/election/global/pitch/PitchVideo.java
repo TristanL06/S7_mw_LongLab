@@ -12,4 +12,9 @@ public class PitchVideo extends Pitch {
     public String getPitch() {
         return "This candidate have a video as pitch.\nHere is the link to the video : " + video;
     }
+
+    public String getVideo() {
+        return video;
+    }
+
 }

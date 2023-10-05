@@ -11,8 +11,13 @@ import election.global.exception.voteIsCloseException;
 import election.global.objectInterface.ObjectLogIn;
 import election.global.objectInterface.ObjectServerCandidate;
 import election.global.objectInterface.ObjectServerVote;
+import election.global.pitch.PitchVideo;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -174,6 +179,56 @@ public class Client {
     }
 
 
+    private static void displayVideo(PitchVideo pitchVideo) {
+        /**
+         * Method use to display the video
+         */
+        try {
+            // Créez une instance de la classe Desktop
+            Desktop desktop = Desktop.getDesktop();
+
+            // Convertissez la chaîne en URI
+            URI uri = new URI(pitchVideo.getVideo());
+
+            // Ouvrez le lien dans le navigateur par défaut
+            desktop.browse(uri);
+        } catch (IOException | URISyntaxException e) {
+            // Gestion des exceptions en cas d'erreur
+            e.printStackTrace();
+        }
+    }
+
+    private static void watchPitchVideo() {
+        /**
+         * Method use to display the pitch video
+         */
+        boolean keepGoing = true;
+        while(keepGoing){
+            System.out.print("If you want to watch a pitchVideo, please enter the number of the candidate.\nIf you want to exit press q.");
+            String input = scanner.nextLine();
+            System.out.println("\n\n");
+
+            if (input.equals("q")) {
+                keepGoing = false;
+            } else {
+                try {
+                    int newInput = Integer.parseInt(input);
+                    if (newInput > 0 && newInput <= candidate.size()) {
+                        if (candidate.get(newInput - 1).isAVideoPitch()) {
+                            displayVideo((PitchVideo) candidate.get(newInput - 1).getPitch());
+                        }
+                    } else {
+                        System.out.println("Please enter a number between 1 and " + candidate.size() + " or q to exit.\n\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a number or q to exit.\n\n");
+                }
+            }
+        }
+
+    }
+
+
     private static void displayCandidates() {
         /**
          * Method use to display the candidates
@@ -191,6 +246,7 @@ public class Client {
             System.out.println(candidate.get(i).toString());
             System.out.println("");
         }
+        watchPitchVideo();
     }
 
     private static void spacing(int number) {
