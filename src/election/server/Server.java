@@ -16,7 +16,7 @@ public class Server {
 
     public static ObjectDistant objectDistant;
     private static int passwordToStopVotingPhase = 1234;
-    private static long numberMinutesToVote = 5;
+    private static long numberMinutesToVote = 1;
     private static double numberMinutesToVoteWarning = Math.min((double)numberMinutesToVote / 2, 5);
     private static double numberMinutesBeforeLaunchingWarning = numberMinutesToVote - numberMinutesToVoteWarning;
 
@@ -47,8 +47,8 @@ public class Server {
 
         startServer();
 
-        long dureeTotaleMillisecondes = (60000 * numberMinutesToVote); // 60 secondes
-        long timeBeforeWarningTimeVote = dureeTotaleMillisecondes - (long) (60000 * numberMinutesBeforeLaunchingWarning); // 30 secondes
+        long dureeTotaleMillisecondes = (60000 * numberMinutesToVote); // 60 secondes times the number of minutes
+        long timeBeforeWarningTimeVote = dureeTotaleMillisecondes - (long) (60000 * numberMinutesBeforeLaunchingWarning); // half of previous time
 
         Timer timer = new Timer();
 
