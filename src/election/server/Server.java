@@ -71,9 +71,9 @@ public class Server {
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                //TODO : create right result
-                Result result = new Result(new HashMap<>());
+                Result result = new Result();
                 objectDistant.stopVoting(passwordToStopVotingPhase, result);
+                result.evaluate();
                 spacing(3);
                 System.out.println(result);
             }
