@@ -110,6 +110,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
 
 
     public void getResultVote(LogIn login) throws RemoteException {
+        result.evaluate();
         login.getResultVote(result);
     }
 

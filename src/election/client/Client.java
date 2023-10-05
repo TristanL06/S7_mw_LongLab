@@ -297,7 +297,7 @@ public class Client {
                 keepLooping = false;
                 break;
             case 4:
-                //DOing nothing : use when the voting phase is over
+                //Doing nothing : use when the voting phase is over
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -349,6 +349,7 @@ public class Client {
                 break;
             case 2:
                 keepLooping = false;
+                break;
             default:
                 System.out.println("Invalid choice");
                 spacing(2);

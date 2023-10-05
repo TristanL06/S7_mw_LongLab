@@ -25,7 +25,7 @@ public class ObjectLogIn extends java.rmi.server.UnicastRemoteObject implements 
     }
 
     public void getResultVote(Result result) {
-        System.out.println(result.toString());
+        System.out.println(result);
     }
 
 }
