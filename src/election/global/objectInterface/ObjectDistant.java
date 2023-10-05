@@ -76,8 +76,7 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
 
     public ServerCandidate retrieveCandidate() throws RemoteException, globalException {
         if (votingIsOpen) {
-            ServerCandidate serverCandidate = new ObjectServerCandidate(getInstanceCandidate());
-            return serverCandidate;
+            return new ObjectServerCandidate(getInstanceCandidate());
         } else {
             throw new voteIsCloseException();
         }
@@ -100,9 +99,9 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         boolean userWasAbleToLogIn = this.checkCredentials(password);
         if (userWasAbleToLogIn) {
             //TODO : create right votingMaterials
+            System.out.println(getInstanceCandidate());
             VotingMaterials votingMaterials = new VotingMaterials(getInstanceCandidate());
-            ServerVote serverVote = new ObjectServerVote(votingMaterials, this, this.getOTP());
-            return serverVote;
+            return new ObjectServerVote(votingMaterials, this, this.getOTP());
         } else {
             throw new badCredentialsException(password);
         }

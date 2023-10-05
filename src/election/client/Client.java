@@ -9,6 +9,8 @@ import election.global.User;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
 import election.global.objectInterface.ObjectLogIn;
+import election.global.objectInterface.ObjectServerCandidate;
+import election.global.objectInterface.ObjectServerVote;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -162,8 +164,8 @@ public class Client {
         User user = getUser();
 
         try {
-            ServerVote objectServerVote = server.getVotingMaterials(user.getPassword());
-            objectServerVote.vote(user);
+            ServerVote serverVote = server.getVotingMaterials(user.getPassword());
+            serverVote.vote(user);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         } catch (globalException e) {
@@ -189,7 +191,6 @@ public class Client {
             System.out.println(candidate.get(i).toString());
             System.out.println("");
         }
-        System.out.println("To watch");
     }
 
     private static void spacing(int number) {

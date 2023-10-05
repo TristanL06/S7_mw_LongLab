@@ -16,7 +16,7 @@ public class Server {
 
     public static ObjectDistant objectDistant;
     private static int passwordToStopVotingPhase = 1234;
-    private static long numberMinutesToVote = 1;
+    private static long numberMinutesToVote = 5;
     private static double numberMinutesToVoteWarning = Math.min((double)numberMinutesToVote / 2, 5);
     private static double numberMinutesBeforeLaunchingWarning = numberMinutesToVote - numberMinutesToVoteWarning;
 
