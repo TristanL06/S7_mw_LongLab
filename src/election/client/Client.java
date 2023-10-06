@@ -1,13 +1,12 @@
 package election.client;
 
 import election.global.Candidate;
-import election.global.Interface.Distant;
-import election.global.Interface.LogIn;
-import election.global.Interface.ServerCandidate;
-import election.global.Interface.ServerVote;
+import election.global.Interface.*;
 import election.global.User;
+import election.global.VotingMaterials;
 import election.global.exception.globalException;
 import election.global.exception.voteIsCloseException;
+import election.global.objectInterface.ObjectClientPrompt;
 import election.global.objectInterface.ObjectLogIn;
 import election.global.objectInterface.ObjectServerCandidate;
 import election.global.objectInterface.ObjectServerVote;
@@ -34,6 +33,7 @@ public class Client {
     private static LogIn logIn;
     private static boolean keepLooping = true;
     private static boolean stillCanVote;
+    private static ClientPrompt clientPrompt;
 
     private static ExecutorService executor;
     private static Scanner scanner;
@@ -41,7 +41,11 @@ public class Client {
     private static User user;
 
     public static void main(String[] args) {
-
+        try {
+            clientPrompt = new ObjectClientPrompt();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             server = (Distant) Naming.lookup("rmi://localhost:10001/echo");
@@ -158,7 +162,8 @@ public class Client {
         if (user != null) {
             return user;
         } else {
-            return createUser();
+            user = createUser();
+            return user;
         }
     }
 
@@ -170,7 +175,7 @@ public class Client {
 
         try {
             ServerVote serverVote = server.getVotingMaterials(user.getPassword());
-            serverVote.vote(user);
+            serverVote.vote(user, clientPrompt);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         } catch (globalException e) {

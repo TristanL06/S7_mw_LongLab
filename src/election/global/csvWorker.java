@@ -8,7 +8,7 @@ import java.util.stream.StreamSupport;
 
 public class csvWorker {
     private String[] files;
-    private String path = "data/";
+    private String path = "S7_mw_LongLab/data/";
 
     public csvWorker() {
         this.files = new String[]{"candidats.csv", "votants.csv"};

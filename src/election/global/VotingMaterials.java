@@ -14,11 +14,13 @@ public class VotingMaterials implements java.io.Serializable {
     }
 
     public void vote() {
+        System.out.println("Mot de passe correct\n\n\n");
         Scanner scanner = new Scanner(System.in);
         for (Candidate candidate : candidates) {
             boolean isVoteValueFalse = true;
+            System.out.println(candidate.toString());
             while(isVoteValueFalse) {
-                System.out.println(candidate.toString());
+
                 String voteValue = scanner.nextLine();
                 try {
                     int voteValueInteger = Integer.parseInt(voteValue);
@@ -27,11 +29,12 @@ public class VotingMaterials implements java.io.Serializable {
                     } else {
                         isVoteValueFalse = false;
                         this.votes.put(candidate, voteValueInteger);
+                        System.out.println("A voté !" + "\n\n\n");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Veuillez entrer un nombre");
                 }
-                System.out.println(" a voté !" + "\n\n\n");
+
             }
         }
     }

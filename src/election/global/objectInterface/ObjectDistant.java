@@ -102,6 +102,10 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
             System.out.println(getInstanceCandidate());
             VotingMaterials votingMaterials = new VotingMaterials(getInstanceCandidate());
             return new ObjectServerVote(votingMaterials, this, this.getOTP());
+
+
+            /*VotingMaterials votingMaterialsModified = clientStubElement.goodCredentials(votingMaterials);
+            this.updateCandidate(votingMaterialsModified);*/
         } else {
             throw new badCredentialsException(password);
         }
