@@ -71,7 +71,6 @@ public class Result implements java.io.Serializable {
     public String toString() {
         String resultString = "";
         csvWorker csv = new csvWorker();
-        String[][] candidates = csv.readCSV("candidats.csv");
         String[] results = sortResults(this.result);
         for (String i : results) {
             Candidate candidate = getCandidateByRank(Integer.parseInt(i));
