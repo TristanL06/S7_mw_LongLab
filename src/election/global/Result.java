@@ -17,7 +17,7 @@ public class Result implements java.io.Serializable {
 
     private Candidate getCandidateByRank(int rank) {
         csvWorker csv = new csvWorker();
-        String[][] candidates = csv.readCSV("../data/candidats.csv");
+        String[][] candidates = csv.readCSV("candidats.csv");
         for (String[] candidate : candidates) {
             if (Integer.parseInt(candidate[0]) == rank) {
                 return new Candidate(candidate[0], candidate[1], candidate[2], Boolean.parseBoolean(candidate[3]));
@@ -28,7 +28,7 @@ public class Result implements java.io.Serializable {
 
     public HashMap<String, Integer> evaluate() {
         csvWorker csv = new csvWorker();
-        String[][] votes = csv.readCSV("../data/votes.csv");
+        String[][] votes = csv.readCSV("votes.csv");
         HashMap<String, HashMap<String, Integer>> globalVotes = new HashMap<>(); // Hashmap<UserId, Hashmap<CandidateRank, Note>>
         for (String[] vote : votes) { // pour tous les votes on attribue à la paire "votant", "candidat" la note. On réécrit si plusieurs votes
             if (!globalVotes.containsKey(vote[0])) { // Si le votant n'est pas enregistré dans les résultats ça l'ajoute
@@ -71,7 +71,6 @@ public class Result implements java.io.Serializable {
     public String toString() {
         String resultString = "";
         csvWorker csv = new csvWorker();
-        String[][] candidates = csv.readCSV("../data/candidats.csv");
         String[] results = sortResults(this.result);
         for (String i : results) {
             Candidate candidate = getCandidateByRank(Integer.parseInt(i));
