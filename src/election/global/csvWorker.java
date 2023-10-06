@@ -1,7 +1,6 @@
 package election.global;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -9,11 +8,10 @@ import java.util.stream.StreamSupport;
 
 public class csvWorker {
     private String[] files;
-
-    private String path = this.getClass().getResource("/").toString();
+    private String path = "data/";
 
     public csvWorker() {
-        this.files = new String[]{"candidats.csv", "votants.csv", "votes.csv"};
+        this.files = new String[]{"candidats.csv", "votants.csv"};
     }
 
     public csvWorker(String file) {
