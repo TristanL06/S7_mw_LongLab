@@ -13,15 +13,6 @@ public class ObjectClientPrompt extends java.rmi.server.UnicastRemoteObject impl
         super();
     }
 
-    public String ask() throws java.rmi.RemoteException {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-    public void print(String message) throws java.rmi.RemoteException {
-        System.out.println(message);
-    }
-
     public VotingMaterials vote(VotingMaterials votingMaterials) throws java.rmi.RemoteException {
         votingMaterials.vote();
         return votingMaterials;
