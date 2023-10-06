@@ -31,7 +31,7 @@ public class VotingMaterials implements java.io.Serializable {
                 } catch (NumberFormatException e) {
                     System.out.println("Veuillez entrer un nombre");
                 }
-                System.out.println("\n\n\n");
+                System.out.println(" a voté !" + "\n\n\n");
             }
         }
     }
