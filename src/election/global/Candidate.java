@@ -36,7 +36,6 @@ public class Candidate implements java.io.Serializable {
     }
 
     public String getRank() {
-
         return rank.toString();
     }
 

@@ -37,10 +37,6 @@ public class VotingMaterials implements java.io.Serializable {
                 }
             }
         }
-        csvWorker csv = new csvWorker();
-        for (Map.Entry<Candidate, Integer> vote : this.votes.entrySet()) {
-            csv.appendCSV("votes.csv", new String[]{vote.getKey().getName(), vote.getValue().toString()});
-        }
     }
 
     public String toString() {

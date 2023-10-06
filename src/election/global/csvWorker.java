@@ -11,7 +11,7 @@ public class csvWorker {
     private String path = "data/";
 
     public csvWorker() {
-        this.files = new String[]{"candidats.csv", "votants.csv"};
+        this.files = new String[]{"candidats.csv", "votants.csv", "votes.csv"};
     }
 
     public csvWorker(String file) {

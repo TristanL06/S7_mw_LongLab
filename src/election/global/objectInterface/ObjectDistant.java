@@ -135,14 +135,13 @@ public class ObjectDistant extends java.rmi.server.UnicastRemoteObject implement
         }
         this.logIntoServer(votingMaterials,user);
         this.updateUsers(user);
-        System.out.println("=== UPDATE ===");
-        System.out.println(OTPs.toString());
-        System.out.println(votingMaterials.toString());
-        System.out.println(votingMaterials.getVotes().toString());
-        System.out.println(user.toString());
-        System.out.println("=== END UPDATE ===");
-        //TODO : update candidate using votingMaterials
-        //TODO : update user with his vote in order to allow him to modify it later
+        csvWorker csv = new csvWorker();
+        for (HashMap.Entry<Candidate, Integer> vote : votingMaterials.getVotes().entrySet()) {
+            csv.appendCSV("../data/votes.csv",
+                        new String[]{Integer.toString(user.getUserNumber()),
+                                vote.getKey().getRank(),
+                                vote.getValue().toString()});
+        }
     }
 
     private void logIntoServer(VotingMaterials votingMaterials, User user) {
