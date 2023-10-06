@@ -32,11 +32,11 @@ public class ObjectServerVote extends java.rmi.server.UnicastRemoteObject implem
     public void vote(User user, ClientPrompt clientPrompt) throws globalException {
 
         try {
-            clientPrompt.vote(votingMaterials);
+            VotingMaterials votingMaterials1 = clientPrompt.vote(votingMaterials);
+            objectDistant.updateCandidate(votingMaterials1, OTP, user);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        this.objectDistant.updateCandidate(votingMaterials, OTP, user);
     }
 
 
