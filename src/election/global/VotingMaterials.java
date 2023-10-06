@@ -2,6 +2,7 @@ package election.global;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class VotingMaterials implements java.io.Serializable {
@@ -16,11 +17,11 @@ public class VotingMaterials implements java.io.Serializable {
     public void vote() {
         System.out.println("Mot de passe correct\n\n\n");
         Scanner scanner = new Scanner(System.in);
+        Integer[] votes = new Integer[candidates.size()];
         for (Candidate candidate : candidates) {
             boolean isVoteValueFalse = true;
             System.out.println(candidate.toString());
             while(isVoteValueFalse) {
-
                 String voteValue = scanner.nextLine();
                 try {
                     int voteValueInteger = Integer.parseInt(voteValue);
@@ -29,13 +30,16 @@ public class VotingMaterials implements java.io.Serializable {
                     } else {
                         isVoteValueFalse = false;
                         this.votes.put(candidate, voteValueInteger);
-                        System.out.println("A voté !" + "\n\n\n");
+                        System.out.println("A voté ! : \n\n\n");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Veuillez entrer un nombre");
                 }
-
             }
+        }
+        csvWorker csv = new csvWorker();
+        for (Map.Entry<Candidate, Integer> vote : this.votes.entrySet()) {
+            csv.appendCSV("votes.csv", new String[]{vote.getKey().getName(), vote.getValue().toString()});
         }
     }
 
@@ -47,7 +51,7 @@ public class VotingMaterials implements java.io.Serializable {
         return result;
     }
 
-
-
-
+    public HashMap<Candidate, Integer> getVotes() {
+        return votes;
+    }
 }

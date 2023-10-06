@@ -11,9 +11,6 @@ public class Result implements java.io.Serializable {
     public Result() {
         this.result = new HashMap<>();
     }
-    public Result(HashMap<String, Integer> result) {
-        this.result = result;
-    }
 
     private Candidate getCandidateByRank(int rank) {
         csvWorker csv = new csvWorker();
@@ -78,6 +75,4 @@ public class Result implements java.io.Serializable {
         }
         return resultString;
     }
-
-
 }

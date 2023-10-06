@@ -65,11 +65,15 @@ public class csvWorker {
         Files.write(path, content.getBytes());
     }
 
-    public void appendCSV(String file, String[] values) throws IOException {
+    public void appendCSV(String file, String[] values) {
         Path path = Path.of(this.path + file);
-        String content = new String(Files.readAllBytes(path));
-        content += String.join(",", values) + "\n";
-        Files.write(path, content.getBytes());
+        try {
+            String content = new String(Files.readAllBytes(path));
+            content += String.join(",", values) + "\n";
+            Files.write(path, content.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteCSV(String file) throws IOException {
